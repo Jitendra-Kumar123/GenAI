@@ -48,3 +48,27 @@ export async function userRegisterController(req, res){
 
     
 }
+
+export async function userLoginController(res, req){
+    const {email, password} =req.body;
+
+    const user = await userModel.findOne({
+        email
+    })
+
+    if(!user){
+        return res.status(401).json({
+            message: "Found Invalid Email or Password"
+        })
+    }
+
+    const isPasswordValidOrNot = await bcrypt.compare(password, user.password);
+
+    if(!isPasswordValidOrNot){
+        return res.status(401).json({
+            message: "Found Invalid Email or Password"
+        })
+    }
+
+    
+}
