@@ -70,5 +70,20 @@ export async function userLoginController(res, req){
         })
     }
 
-    
+     const token = jwt.sign({
+        id: user._id
+    }, process.env.JWT_SECRET,{
+        expiresIn: '6d'
+    })
+
+    res.cookie("token", token);
+
+    return res.status(200).json({
+        message: "User Logged-In Successfully",
+        user: {
+            username: user.username,
+            id: user._id,
+            email: user.email
+        },
+    })
 }
